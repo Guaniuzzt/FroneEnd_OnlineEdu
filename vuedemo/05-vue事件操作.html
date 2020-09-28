@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- v-on 指令绑定事件，click指定绑定的事件类型，事件发生时调用vue中methods节点中定义的方法 -->
+        <button v-on:click="search()">查询1</button>
+        <!-- 简写-->
+        <button @click="search()">查询2</button>
+
+
+    </div>
+    <script src="vue.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                searchMap:{
+                    keyWord: '尚硅谷'
+                },
+                //查询结果
+                result: {}
+            },
+            methods:{ //定义多个方法
+                search(){
+                    console.log('search ...')
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>

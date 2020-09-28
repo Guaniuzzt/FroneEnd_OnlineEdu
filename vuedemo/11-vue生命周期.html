@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="update">update</button>
+        <h3 id="h3">{{ message }}</h3>
+    </div>
+    <script src="vue.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                message: '床前明月光'
+            },
+            methods: {
+                show() {
+                    console.log('执行show方法')
+                },
+                update() {
+                    this.message = '玻璃好上霜'
+                }
+            },
+            beforeCreate() { // 第一个被执行的钩子方法：实例被创建出来之前执行
+                debugger
+                console.log(this.message) //undefined
+                this.show() //TypeError: this.show is not a function
+                // beforeCreate执行时，data 和 methods 中的 数据都还没有没初始化
+            },
+            created(){  //在页面渲染之前执行
+                debugger
+                console.log('created..')
+
+            },
+            mounted(){  //在页面渲染之后执行
+                debugger
+                console.log('mounted..')
+
+            },
+            beforeMount() { // 第三个被执行的钩子方法
+                debugger
+                console.log(document.getElementById('h3').innerText) //{{ message }}
+                // beforeMount执行时，模板已经在内存中编辑完成了，尚未被渲染到页面中
+            },
+
+            //===运行中的两个事件
+            beforeUpdate() { // 数据更新的前一刻
+                debugger
+                console.log('界面显示的内容：' + document.getElementById('h3').innerText)
+                console.log('data 中的 message 数据是：' + this.message)
+                // beforeUpdate执行时，内存中的数据已更新，但是页面尚未被渲染
+            },
+            updated() {
+                debugger
+                console.log('界面显示的内容：' + document.getElementById('h3').innerText)
+                console.log('data 中的 message 数据是：' + this.message)
+                // updated执行时，内存中的数据已更新，并且页面已经被渲染
+            }
+
+        })
+    </script>
+</body>
+
+</html>
