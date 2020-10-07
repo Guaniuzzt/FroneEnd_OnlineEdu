@@ -38,6 +38,35 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/teacher',
+    component: Layout,
+    redirect: '/teacher/table',
+    name: 'Teacher Management',
+    meta: { title: 'Teacher Management', icon: 'example' },
+    children: [
+      {
+        path: 'table',
+        name: 'Teacher List',
+        component: () => import('@/views/edu/teacher/list'),
+        meta: { title: 'Teacher List', icon: 'table' }
+      },
+      {
+        path: 'save',
+        name: 'Add Teacher',
+        component: () => import('@/views/edu/teacher/save'),
+        meta: { title: 'Add Teacher', icon: 'tree' }
+      },
+      {
+        path:'edit/:id',
+        name:'EduTeacherEdit',
+        component:() => import('@/views/edu/teacher/save'),
+        meta:{title:'Edit Teacher',noCache: true},
+        hidden: true
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
