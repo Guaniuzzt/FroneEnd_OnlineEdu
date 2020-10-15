@@ -26,6 +26,30 @@
       </el-form-item>
 
       <!-- 讲师头像：TODO -->
+      <el-form-item label="讲师头像">
+
+          <!-- 头衔缩略图 -->
+          <pan-thumb :image="teacher.avatar"/>
+          <!-- 文件上传按钮 -->
+          <el-button type="primary" icon="el-icon-upload" @click="imagecropperShow=true">Upload Avatar
+          </el-button>
+
+          <!--
+          v-show：是否显示上传组件
+          :key：类似于id，如果一个页面多个图片上传控件，可以做区分
+          :url：后台上传的url地址
+          @close：关闭上传组件
+          @crop-upload-success：上传成功后的回调 -->
+          <image-cropper
+            v-show="imagecropperShow"
+            :width="300"
+            :height="300"
+            :key="imagecropperKey"
+            :url="BASE_API+'/eduoss/fileoss'"
+            field="file"
+            @close="close"
+            @crop-upload-success="cropSuccess"/>
+      </el-form-item>
 
       <el-form-item>
         <el-button :disabled="saveBtnDisabled" type="primary" @click="saveOrUpdate">Save</el-button>
@@ -36,17 +60,24 @@
 
 <script>
 import teacherApi from '@/api/edu/teacher'
+import ImageCropper from '@/components/ImageCropper'
+import PanThumb from '@/components/PanThumb'
 export default {
+    components:{ImageCropper, PanThumb},
     data(){
       return{
         teacher:{ 
-          // name: '',
-          // sort: ,
-          // level: 1,
-          // career: '',
-          // intro: '',
-          // avatar: ''
+           name: '',
+           sort: 0,
+           level: 1,
+           career: '',
+           intro: '',
+           avatar: ''
         },
+        //上传弹框的组件是否显示
+        imagecropperShow: false,
+        imagecropperKey: 0,
+        BASE_API: process.env.BASE_API, //获取dev.env.js里面端口号
         saveBtnDisabled: false // 保存按钮是否禁用,
       }
     },
@@ -62,6 +93,19 @@ export default {
       }
     },
     methods:{
+
+      close(){  //关闭上传弹框的方法
+        this.imagecropperShow = false
+        //上传组件初始化
+        this.imagecropperKey = this.imagecropperKey + 1
+      },
+      //上传成功方法
+      cropSuccess(data){
+        this.imagecropperShow = false
+        this.imagecropperKey = this.imagecropperKey + 1
+        //上传之后返回图片地址
+        this.teacher.avatar = data.url
+      },
 
       init(){
          //如果路径中有id值
