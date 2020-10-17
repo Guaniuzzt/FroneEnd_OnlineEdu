@@ -70,12 +70,12 @@ export const constantRouterMap = [
     path: '/subject',
     component: Layout,
     redirect: '/subject/list',
-    name: 'Course Management',
-    meta: { title: 'Course Management', icon: 'example' },
+    name: 'Course Category Management',
+    meta: { title: 'Course Category Management', icon: 'example' },
     children: [
       {
         path: 'list',
-        name: 'Course List',
+        name: 'Course Category List',
         component: () => import('@/views/edu/subject/list'),
         meta: { title: 'Course Category', icon: 'table' }
       },
@@ -83,7 +83,50 @@ export const constantRouterMap = [
         path: 'save',
         name: 'Add Course Category',
         component: () => import('@/views/edu/subject/save'),
+        meta: { title: 'Add Course Category', icon: 'tree' }
+      }
+    ]
+  },
+
+  {
+    path: '/course',
+    component: Layout,
+    redirect: '/course/list',
+    name: 'Course Management',
+    meta: { title: 'Course Management', icon: 'example' },
+    children: [
+      {
+        path: 'list',
+        name: 'Course List',
+        component: () => import('@/views/edu/course/list'),
+        meta: { title: 'Course Category', icon: 'table' }
+      },
+      {
+        path: 'info',
+        name: 'Add Course',
+        component: () => import('@/views/edu/course/info'),
         meta: { title: 'Add Course', icon: 'tree' }
+      },
+      {
+        path: 'info/:id',
+        name: 'EduCourseInfoEdit',
+        component: () => import('@/views/edu/course/info'),
+        meta: { title: 'Edit Course Information', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'chapter/:id',
+        name: 'EduCourseChapterEdit',
+        component: () => import('@/views/edu/course/chapter'),
+        meta: { title: 'Edit Course Outline', noCache: true },
+        hidden: true
+      },
+      {
+        path: 'publish/:id',
+        name: 'EduCoursePublishEdit',
+        component: () => import('@/views/edu/course/publish'),
+        meta: { title: 'Publish Course', noCache: true },
+        hidden: true
       }
     ]
   },
