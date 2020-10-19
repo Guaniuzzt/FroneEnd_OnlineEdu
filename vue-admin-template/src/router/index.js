@@ -70,8 +70,8 @@ export const constantRouterMap = [
     path: '/subject',
     component: Layout,
     redirect: '/subject/list',
-    name: 'Course Category Management',
-    meta: { title: 'Course Category Management', icon: 'example' },
+    name: 'Course Category',
+    meta: { title: 'Course Category', icon: 'example' },
     children: [
       {
         path: 'list',
@@ -83,7 +83,7 @@ export const constantRouterMap = [
         path: 'save',
         name: 'Add Course Category',
         component: () => import('@/views/edu/subject/save'),
-        meta: { title: 'Add Course Category', icon: 'tree' }
+        meta: { title: 'Add Category', icon: 'tree' }
       }
     ]
   },
