@@ -16,10 +16,32 @@ export default {
     //2 查询所有的讲师
     getListTeacher(){
         return request({
-            url: '/eduservice//teacher/findAll',
+            url: '/eduservice/teacher/findAll',
             method: 'get'
         })
-    }
+    },
+
+    //根据课程id查询课程基本信息
+    getCourseInfoId(id){
+        return request({
+            url: '/eduservice/course/getCourseInfo/' + id,
+            method: 'get'
+        })
+    },
+
+
+    //修改课程信息
+
+    UpdateCourseInfoId(courseInfoVo){
+        return request({
+            url: '/eduservice/course/updateCourseInfo',
+            method: 'post',
+            data: courseInfoVo
+        })
+    },
+
+
+
 
   
 }

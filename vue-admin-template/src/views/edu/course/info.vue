@@ -106,6 +106,7 @@ export default {
             cover: '/static/testpicture.jpg',
             price: 0
       },
+      cousreid : '',
 
       teacherList:[] , //封装所有的讲师数据
 
@@ -118,15 +119,55 @@ export default {
   },
 
   created() {
-    //console.log('info created')
-    this.getTeacher()
-    //初始化一级分类
-    this.getOneSubject()
 
+    //获取路由中的id值
+    if(this.$route.params && this.$route.params.id){
+      this.courseId = this.$route.params.id
+      this.getTeacher()
+      this.getInfo()
+      
+    }else{
+        //console.log('info created')
+        //this.getTeacher()
+        //初始化一级分类
+        this.getTeacher()
+        this.getOneSubject()
+        this.courseInfo = {
+            title: '',
+            subjectId: '',  //二级分类id
+            subjectParentId: '', //一级分类id
+            teacherId: '',
+            lessonNum: 0,
+            description: '',
+            cover: '/static/testpicture.jpg',
+            price: 0
+        }
+    }
   },
 
   methods: {
+    getInfo(){
+        course.getCourseInfoId(this.courseId)
+            .then(response =>{
+                //再courseInfo中有课程基本信息，包含一级分类id 和 二级分类id
+                this.courseInfo = response.data.courseInfoVo
+                //1 查询所有分类，包含一级和二级
+                subject.getSubjectList()
+                    .then(response =>{
+                        //2 获取所有一级分类
+                        this.subjectOneList = response.data.list
 
+                        //3 把所有的一级分类数组进行遍历比较
+                        for(var i=0; i<this.subjectOneList.length; i++){
+                            var oneSubject = this.subjectOneList[i]
+                            if(this.courseInfo.subjectParentId == oneSubject.id){
+                                //获取一级分类的所有的二级分类
+                                this.subjectTwoList = oneSubject.children
+                            }
+                        }
+                    })
+            })
+    },
     beforeAvatarUpload(file){ //上传封面之前
         const isJPG = file.type === 'image/jpeg'
         const isLt2M = file.size / 1024 / 1024 < 2
@@ -176,7 +217,7 @@ export default {
             })
     },
 
-    saveOrUpdate() {
+    addCourse(){
       console.log('next')
       course.addCourseInfo(this.courseInfo)
         .then( response =>{
@@ -187,6 +228,25 @@ export default {
             this.$router.push({ path: '/course/chapter/'+response.data.courseId})
         })
       
+    },
+
+    updateCourse(){
+        course.UpdateCourseInfoId(this.courseInfo)
+            .then(response =>{
+                this.$message({
+                type: 'success',
+                message: 'Sucessfully edit course information'
+                })
+                this.$router.push({ path: '/course/chapter/'+this.courseId})
+            })
+    },
+    saveOrUpdate(){
+        //判断添加还是修改
+        if(!this.courseInfo.id){
+            this.addCourse()
+        }else{
+            this.updateCourse()
+        }
     }
   }
 }
